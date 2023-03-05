@@ -1,0 +1,13 @@
+.build
+.mbed
+projectfiles
+*.py*
+
+cmake_build/
+BUILD/
+
+mbed-os/
+ST7735S_TFT/
+Fonts/
+
+__pycache__
