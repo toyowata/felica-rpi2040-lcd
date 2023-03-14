@@ -33,6 +33,7 @@
 #define NANACO_BALANCE_CODE           0x5597
 #define WAON_SERVICE_CODE1            0x6817
 #define WAON_SERVICE_ID               0x684F
+#define SUICA_SERVICE_CODE            0x23CB
 
 int requestService(uint16_t serviceCode);
 int readEncryption(uint16_t serviceCode, uint8_t blockNumber, uint8_t *buf);
@@ -147,7 +148,7 @@ int main()
                 balance = (balance << 8) + attr[12+11]; // 11 byte目
 
                 // カード種別判定
-                char card[8];
+                char card[14];
                 if ((attr[12+8] & 0xF0) == 0x30) {
                     strcpy(card, "ICOCA");
                 }
@@ -167,8 +168,11 @@ int main()
                     else if (requestService(PASMO_SERVICE_CODE)) {
                         strcpy(card, "PASMO");
                     }                    
-                    else {
+                    else if (requestService(SUICA_SERVICE_CODE)) {
                         strcpy(card, "Suica");
+                    }                    
+                    else {
+                        strcpy(card, "Welcome Suica");
                     }
                 }
 

@@ -9,6 +9,7 @@ nanaco等のプリペイド型ICカードやSuica等の交通系ICカードの�
 対応しているICカード
 
 * Suica（モバイルsuica含む）
+* Welcome Suica
 * PASMO
 * ICOCA
 * Kitaca
@@ -33,7 +34,7 @@ https://www.switch-science.com/catalog/1029/
 デバイスは以下のように接続してください。
 
 |RP2040-LCD-0.96|RC-S602S|
-|---|---|
+|:---|:---|
 |3V3(OUT) (pin 36)|VDD (pin 1)|
 |GND (pin 23)|GND (pin 4, 6)|
 |GPIO16 (pin 21)|RXD (pin 2)|
