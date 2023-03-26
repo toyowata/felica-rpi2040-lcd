@@ -11,3 +11,4 @@ ST7735S_TFT/
 Fonts/
 
 __pycache__
+.vscode/

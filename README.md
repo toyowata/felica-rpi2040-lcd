@@ -16,6 +16,7 @@ nanaco等のプリペイド型ICカードやSuica等の交通系ICカードの�
 * toica
 * SUGOCA
 * PiTaPa
+* SAPICA
 * Edy
 * nanaco（nanacoモバイル含む）
 * WAON

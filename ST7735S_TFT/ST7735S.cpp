@@ -50,17 +50,16 @@ void ST7735S::init()
 {    
     // init SPI
     _spi.format(8, 3);
-    _spi.frequency(20000000);
+    _spi.frequency(6666666);
     
     _reset = 1;
     ThisThread::sleep_for(10ms);
     _reset = 0;
     ThisThread::sleep_for(10ms);
     _reset = 1;
-    ThisThread::sleep_for(120ms);
 
     wr_cmd(ST7735_SWRESET);
-    ThisThread::sleep_for(150ms);
+    ThisThread::sleep_for(120ms);
     wr_cmd(ST7735_SLPOUT);
     ThisThread::sleep_for(120ms);
 

@@ -8,7 +8,7 @@
         },
         "RASPBERRY_PI_PICO": {
             "ST7735S-MOSI"                              : "p11",
-            "ST7735S-MISO"                              : "p24",
+            "ST7735S-MISO"                              : "NC",
             "ST7735S-SCLK"                              : "p10",
             "ST7735S-CS"                                : "p9",
             "ST7735S-RS"                                : "p8",

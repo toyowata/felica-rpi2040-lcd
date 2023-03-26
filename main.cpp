@@ -17,8 +17,9 @@
 #define RCS620S_MAX_RESPONSE_LEN      30
  
 // FeliCa Service/System Code
-#define CYBERNE_SYSTEM_CODE           0x0003
-#define COMMON_SYSTEM_CODE            0xFE00
+#define CYBERNE_SYSTEM_CODE           0x0300
+#define SAPICA_SYSTEM_CODE            0x5E86
+#define COMMON_SYSTEM_CODE            0x00FE
 #define PASSNET_SERVICE_CODE          0x090F
 #define FELICA_ATTRIBUTE_CODE         0x008B
 #define KITACA_SERVICE_CODE           0x208B
@@ -27,6 +28,7 @@
 #define PASMO_SERVICE_CODE            0x1cc8
 #define SUGOCA_SERVICE_CODE           0x21c8
 #define PITAPA_SERVICE_CODE           0x1b88
+#define SAPICA_SERVICE_CODE           0xBA4B
 #define EDY_ATTRIBUTE_CODE            0x110B
 #define EDY_SERVICE_CODE              0x1317
 #define NANACO_ID_CODE                0x558B
@@ -42,6 +44,16 @@ void draw_JPY_yen_symbol(int x, int y, int dx, int dy);
 DigitalOut back_light(p25);
 ST7735S tft(ST7735S_MOSI, ST7735S_MISO, ST7735S_SCLK, ST7735S_CS, ST7735S_RS, ST7735S_RESET);
 RCS620S rcs620s(RCS620S_TX, RCS620S_RX);
+
+inline void draw_JPY_yen_symbol(int x, int y, int dx, int dy)
+{
+    tft.rect(x, y, x + 1, y + dy, Yellow);
+    tft.rect(x, y, x + dx, y + 1, Yellow);
+    tft.rect(x + dx, y, x + dx + 1, y + dy, Yellow);
+    tft.rect(x, y + (dy / 2), x + dx, y + (dy / 2) + 1, Yellow);
+    tft.rect(x + (dx / 2), y, x + (dx / 2) + 1, y + (dy / 2), Yellow);
+    tft.rect(x + dx - (dx / 4), y + dy - 1, x + dx, y + dy, Yellow);
+}
 
 void printBalanceTFT(const char * name, uint32_t balance)
 {
@@ -62,16 +74,6 @@ void printBalanceTFT(const char * name, uint32_t balance)
     tft.printf(buf);
 
     draw_JPY_yen_symbol(128, 50, 14, 15);
-}
-
-void draw_JPY_yen_symbol(int x, int y, int dx, int dy)
-{
-    tft.rect(x, y, x + 1, y + dy, Yellow);
-    tft.rect(x, y, x + dx, y + 1, Yellow);
-    tft.rect(x + dx, y, x + dx + 1, y + dy, Yellow);
-    tft.rect(x, y + (dy / 2), x + dx, y + (dy / 2) + 1, Yellow);
-    tft.rect(x + (dx / 2), y, x + (dx / 2) + 1, y + (dy / 2), Yellow);
-    tft.rect(x + dx - (dx / 4), y + dy - 1, x + dx, y + dy, Yellow);
 }
 
 int main()
@@ -124,7 +126,7 @@ int main()
 #else
         
         // サイバネ領域
-        if (rcs620s.polling(CYBERNE_SYSTEM_CODE)) {
+        if (rcs620s.polling(CYBERNE_SYSTEM_CODE) || rcs620s.polling(SAPICA_SYSTEM_CODE)) {
             // Suica, PASMO等の交通系ICカード
             if (requestService(PASSNET_SERVICE_CODE)) {
                 readEncryption(PASSNET_SERVICE_CODE, 0, buf);
@@ -167,6 +169,9 @@ int main()
                     }
                     else if (requestService(PASMO_SERVICE_CODE)) {
                         strcpy(card, "PASMO");
+                    }                    
+                    else if (requestService(SAPICA_SERVICE_CODE)) {
+                        strcpy(card, "SAPICA");
                     }                    
                     else if (requestService(SUICA_SERVICE_CODE)) {
                         strcpy(card, "Suica");
